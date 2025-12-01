@@ -6,6 +6,149 @@
     <title>Formulario</title>
 </head>
 <body>
-    
+   <form action="javascript:validacion()">
+    <fieldset name="Datos personales">
+        <legend>Datos personales</legend>
+        <label for="Nombre">Nombre:</label>
+        <input type="text" id="Nombre" name="Nombre">
+        <label for="primer_apellido">Primer apellido:</label>
+        <input type="text" id="primer_apellido" name="primer_apellido">
+        <label for="segundo_apellido">Segundo apellido:</label>
+        <input type="text" id="segundo_apellido" name="segundo_apellido"> <br>
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="direccion" name="direccion" placeholder="calle o plaza, número y piso"> <br>
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono" name="telefono" placeholder="123 33 33 33" > <br>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" placeholder="ejemplo@ejemplo.com"> <br>
+        <label for="contraseña">Contraseña:</label>
+        <input type="password" id="contraseña" name="contraseña"> <br>
+        <label for="sexo">Sexo:</label> <br>
+        <div>
+            <input type="radio" id="sexo1" name="sexo" value="Varón">
+            <label for="sexo1">Varón</label> <br>
+            <input type="radio" id="sexo2" name="sexo" value="Mujer">
+            <label for="sexo2">Mujer</label>
+        </div>
+    </fieldset>
+    <fieldset name="Nivel de estudios e intereses">
+        <legend>Nivel de estudios e intereses</legend>
+        <label for="estudios">Nivel de estudios</label> <br>
+        <div>
+            <input type="radio" id="estudios1" name="estudios" value="Certificado escolar">
+            <label for="estudios1">Certificado escolar</label> <br>
+            <input type="radio" id="estudios2" name="estudios" value="Graduado en ESO">
+            <label for="estudios2">Graduado en ESO</label> <br>
+            <input type="radio" id="estudios3" name="estudios" value="Bachiller - Formación profesional">
+            <label for="estudios3">Bachiller - Formación profesional</label> <br>
+            <input type="radio" id="estudios4" name="estudios" value="Diplomado">
+            <label for="estudios4">Diplomado</label> <br>
+            <input type="radio" id="estudios5" name="estudios" value="Licenciado o  Doctorado">
+            <label for="estudios5">Licenciado o Doctorado</label> <br>
+        </div>
+        <label for="intereses">Recibir artículos sobre los siguientes temas</label>
+        <div>
+            <input type="checkbox" id="musica" name="intereses" value="musica" />
+            <label for="musica">Musica</label>
+        </div>
+        <div>
+            <input type="checkbox" id="deportes" name="intereses" value="deportes" />
+            <label for="deportes">Deportes</label>
+        </div>
+        <div>
+            <input type="checkbox" id="cine" name="intereses" value="cine" />
+            <label for="cine">Cine</label>
+        </div>
+        <div>
+            <input type="checkbox" id="libros" name="intereses" value="libros" />
+            <label for="libros">Libros</label>
+        </div>
+        <div>
+            <input type="checkbox" id="ciencia" name="intereses" value="ciencia" />
+            <label for="ciencia">Ciencia</label>
+        </div>
+    </fieldset>
+    <fieldset name="Datos sobre la revista">
+        <legend>Datos sobre la revista</legend>
+        <label for="frecuencia">Frecuencia con la que se lee la revista</label>
+        <select name="frecuencia" id="frecuencia">
+            <option value="">Seleccione:</option>
+            <option value="Semanalmente">Semanalmente</option>
+            <option value="Mensualmente">Mensualmente</option>
+            <option value="Anualmente">Anualmente</option>
+        </select> <br>
+        <p>Puedes mandar un artículo sobre cualquiera de los temas que tratamos. Nosotros lo valoraremos para que pueda ser publicado</p>
+        <button type="button" onclick="document.getElementById('archivo').click()">Seleccionar archivo</button>
+        <span id="estadoArchivo" style="margin-left: 10px; color: #555;">
+        No se ha subido ningún archivo
+    </span>
+        <input type="file" id="archivo" style="display:none" accept=".pdf,.doc,.docx,.txt">
+
+        <br>
+        <label for="comentario">Si deseas mandar simplemente una opinión o comentario escríbelo aqui</label>
+        <textarea name="comentario" id="comentario" rows="6" cols="50" placeholder="Escribe tu comentario..."></textarea>
+    </fieldset>
+    <fieldset name="Comenzar de nuevo">
+        <legend>Comenzar de nuevo</legend>
+        <p>Borrar todos los datos del formulario y volver a empezar</p>
+        <button type="reset">Borrar todo</button>
+    </fieldset>
+    <fieldset name="Enviar">
+        <legend>Enviar</legend>
+        <p>Enviar formulario por correo electrónico. Al pulsar en el botón se abrirá la página de envío por correo, pulsa allí en enviar</p>
+        <button type="submit">Enviar por correo</button>
+    </fieldset>
+   </form> 
+   <script>
+    function validacion() {
+        let errores = [];
+        let first_error_field = null;
+        const validar_email = /^[^@\s]+@[^@\s]+\.[^@\s]+$/ ;
+        const validar_telefono = /^\d{9}$/ ;
+        const nombre = document.getElementById("nombre");
+        const primer_apellido = document.getElementById("primer_apellido");
+        const segundo_apellido = document.getElementById("segundo_apellido");
+        const telefono = document.getElementById("telefono");
+        const email = document.getElementById("email");
+        const contraseña = document.getElementById("contraseña");
+        const sexo = document.querySelector('input[name="sexo"]:checked');
+        const estudios = document.querySelector('input[name="estudios"]:checked');
+        const frecuencia = document.getElementById("frecuencia");
+
+        if (nombre.value.trim() === "") {errores.push("El nombre es obligatorio"); firstErrorField ||= nombre; }
+        if (primer_apellido.value.trim() === "") {errores.push("El primer apellido es obligatorio"); firstErrorField ||= primer_apellido; }
+        if (segundo_apellido.value.trim() === "") {errores.push("El segundo apellido es obligatorio"); firstErrorField ||= segundo_apellido; }
+        if (!validar_telefono.test(telefono.value.trim())) {errores.push("El teléfono tiene que tener 9 números del 0 al 9"); firstErrorField ||= telefono;}
+        if (!validar_email.test(email.value.trim())) {errores.push("El email tiene un formato incorrecto"); firstErrorField ||= email}
+        if (contraseña.value.trim() === "") {errores.push("La contraseña es obligatoria"); firstErrorField ||= contraseña; }
+        if (!sexo) {errores.push("Escoge un sexo"); firstErrorField ||= sexo; }
+        if (!estudios) {errores.push("Escoge tu nivel de estudios"); firstErrorField ||= estudios; }
+        if (frecuencia.value === "") {errores.push("Escoge con cuanta frecuencia desea recibir la revista"); firstErrorField ||= frecuencia; }
+
+        if (errores.length > 0) {
+        alert("Se han encontrado los siguientes errores:\n\n" + errores.join("\n"));
+        firstErrorField.focus();
+        return;
+        }
+
+        alert("Datos enviados correctamente");
+        const form = document.querySelector("form");
+        form.method = "GET";
+        form.action = "https://httpbin.org/get";
+        form.sumbit();
+    };
+    function actualizarEstadoArchivo() {
+    const estado = document.getElementById("estadoArchivo");
+    const archivo = document.getElementById("archivo").files[0];
+
+    if (!archivo) {
+        estado.textContent = "No se ha subido ningún archivo";
+        estado.style.color = "#555";
+    } else {
+        estado.textContent = "Archivo subido: " + archivo.name;
+        estado.style.color = "green";
+    }
+    };
+   </script>
 </body>
 </html>
