@@ -6,7 +6,7 @@
     <title>Formulario</title>
 </head>
 <body>
-   <form action="javascript:validacion()">
+   <form onsubmit="validacion(); return false;">
     <fieldset name="Datos personales">
         <legend>Datos personales</legend>
         <label for="Nombre">Nombre:</label>
@@ -31,6 +31,7 @@
             <label for="sexo2">Mujer</label>
         </div>
     </fieldset>
+
     <fieldset name="Nivel de estudios e intereses">
         <legend>Nivel de estudios e intereses</legend>
         <label for="estudios">Nivel de estudios</label> <br>
@@ -46,6 +47,7 @@
             <input type="radio" id="estudios5" name="estudios" value="Licenciado o  Doctorado">
             <label for="estudios5">Licenciado o Doctorado</label> <br>
         </div>
+
         <label for="intereses">Recibir artículos sobre los siguientes temas</label>
         <div>
             <input type="checkbox" id="musica" name="intereses" value="musica" />
@@ -68,6 +70,7 @@
             <label for="ciencia">Ciencia</label>
         </div>
     </fieldset>
+
     <fieldset name="Datos sobre la revista">
         <legend>Datos sobre la revista</legend>
         <label for="frecuencia">Frecuencia con la que se lee la revista</label>
@@ -77,35 +80,44 @@
             <option value="Mensualmente">Mensualmente</option>
             <option value="Anualmente">Anualmente</option>
         </select> <br>
+
         <p>Puedes mandar un artículo sobre cualquiera de los temas que tratamos. Nosotros lo valoraremos para que pueda ser publicado</p>
+        
         <button type="button" onclick="document.getElementById('archivo').click()">Seleccionar archivo</button>
         <span id="estadoArchivo" style="margin-left: 10px; color: #555;">
-        No se ha subido ningún archivo
-    </span>
-        <input type="file" id="archivo" style="display:none" accept=".pdf,.doc,.docx,.txt">
+            No se ha subido ningún archivo
+        </span>
+
+        <input type="file" id="archivo" style="display:none" accept=".pdf,.doc,.docx,.txt"
+               onchange="actualizarEstadoArchivo()">
 
         <br>
-        <label for="comentario">Si deseas mandar simplemente una opinión o comentario escríbelo aqui</label>
+        <label for="comentario">Si deseas mandar simplemente una opinión o comentario escríbelo aquí</label>
         <textarea name="comentario" id="comentario" rows="6" cols="50" placeholder="Escribe tu comentario..."></textarea>
     </fieldset>
+
     <fieldset name="Comenzar de nuevo">
         <legend>Comenzar de nuevo</legend>
         <p>Borrar todos los datos del formulario y volver a empezar</p>
         <button type="reset">Borrar todo</button>
     </fieldset>
+
     <fieldset name="Enviar">
         <legend>Enviar</legend>
         <p>Enviar formulario por correo electrónico. Al pulsar en el botón se abrirá la página de envío por correo, pulsa allí en enviar</p>
         <button type="submit">Enviar por correo</button>
     </fieldset>
    </form> 
+
    <script>
     function validacion() {
         let errores = [];
-        let first_error_field = null;
-        const validar_email = /^[^@\s]+@[^@\s]+\.[^@\s]+$/ ;
-        const validar_telefono = /^\d{9}$/ ;
-        const nombre = document.getElementById("nombre");
+        let firstErrorField = null;
+
+        const validar_email = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+        const validar_telefono = /^\d{9}$/;
+
+        const nombre = document.getElementById("Nombre");
         const primer_apellido = document.getElementById("primer_apellido");
         const segundo_apellido = document.getElementById("segundo_apellido");
         const telefono = document.getElementById("telefono");
@@ -118,37 +130,52 @@
         if (nombre.value.trim() === "") {errores.push("El nombre es obligatorio"); firstErrorField ||= nombre; }
         if (primer_apellido.value.trim() === "") {errores.push("El primer apellido es obligatorio"); firstErrorField ||= primer_apellido; }
         if (segundo_apellido.value.trim() === "") {errores.push("El segundo apellido es obligatorio"); firstErrorField ||= segundo_apellido; }
-        if (!validar_telefono.test(telefono.value.trim())) {errores.push("El teléfono tiene que tener 9 números del 0 al 9"); firstErrorField ||= telefono;}
-        if (!validar_email.test(email.value.trim())) {errores.push("El email tiene un formato incorrecto"); firstErrorField ||= email}
+        if (!validar_telefono.test(telefono.value.trim())) {errores.push("El teléfono tiene que tener 9 números"); firstErrorField ||= telefono;}
+        if (!validar_email.test(email.value.trim())) {errores.push("El email tiene un formato incorrecto"); firstErrorField ||= email;}
         if (contraseña.value.trim() === "") {errores.push("La contraseña es obligatoria"); firstErrorField ||= contraseña; }
-        if (!sexo) {errores.push("Escoge un sexo"); firstErrorField ||= sexo; }
-        if (!estudios) {errores.push("Escoge tu nivel de estudios"); firstErrorField ||= estudios; }
-        if (frecuencia.value === "") {errores.push("Escoge con cuanta frecuencia desea recibir la revista"); firstErrorField ||= frecuencia; }
+
+        if (!sexo) {
+            errores.push("Escoge un sexo");
+            firstErrorField ||= document.getElementById("sexo1");
+        }
+
+        if (!estudios) {
+            errores.push("Escoge tu nivel de estudios");
+            firstErrorField ||= document.getElementById("estudios1");
+        }
+
+        if (frecuencia.value === "") {
+            errores.push("Escoge con cuánta frecuencia deseas recibir la revista");
+            firstErrorField ||= frecuencia;
+        }
 
         if (errores.length > 0) {
-        alert("Se han encontrado los siguientes errores:\n\n" + errores.join("\n"));
-        firstErrorField.focus();
-        return;
+            alert("Se han encontrado los siguientes errores:\n\n" + errores.join("\n"));
+            firstErrorField.focus();
+            return;
         }
 
         alert("Datos enviados correctamente");
+
         const form = document.querySelector("form");
         form.method = "GET";
         form.action = "https://httpbin.org/get";
-        form.sumbit();
-    };
-    function actualizarEstadoArchivo() {
-    const estado = document.getElementById("estadoArchivo");
-    const archivo = document.getElementById("archivo").files[0];
-
-    if (!archivo) {
-        estado.textContent = "No se ha subido ningún archivo";
-        estado.style.color = "#555";
-    } else {
-        estado.textContent = "Archivo subido: " + archivo.name;
-        estado.style.color = "green";
+        form.submit();
     }
-    };
+
+    function actualizarEstadoArchivo() {
+        const estado = document.getElementById("estadoArchivo");
+        const archivo = document.getElementById("archivo").files[0];
+
+        if (!archivo) {
+            estado.textContent = "No se ha subido ningún archivo";
+            estado.style.color = "#555";
+        } else {
+            estado.textContent = "Archivo subido: " + archivo.name;
+            estado.style.color = "green";
+        }
+    }
    </script>
+
 </body>
 </html>
